@@ -29,9 +29,11 @@ public class MyLinkedListTest extends TestCase {
 
 	@Test
 	public void testAddValueType() {
+		studentLinkedList.clear();
 		String message = "Hello";
 		studentLinkedList.add(message);
-		assertThat(studentLinkedList, hasItem(message));
+		assertThat(studentLinkedList.size(), is(1));
+		assertThat(studentLinkedList.get(0), is(message));
 	}
 
 	@Test
@@ -73,7 +75,7 @@ public class MyLinkedListTest extends TestCase {
 				"Are you sure you're there alone?",
 				"Cause I'm",
 				"Tryin' to explain"
-				}));
+		}));
 		assertThat(studentLinkedList, hasItems("Are you sure you're there alone?", "Cause I'm", "Tryin' to explain"));
 	}
 
@@ -98,7 +100,7 @@ public class MyLinkedListTest extends TestCase {
 				new String[] {"Why don't you", "Why don't you"}));
 		assertThat(studentLinkedList.indexOf(message),is(studentLinkedList.size()-1));
 	}
-	
+
 	@Test
 	public void testClear() {
 		studentLinkedList.clear();
@@ -167,7 +169,7 @@ public class MyLinkedListTest extends TestCase {
 		studentLinkedList.add("Kiss the rain");
 		studentLinkedList.add("Kiss the rain");
 		studentLinkedList.add("Kiss the rain");
-		
+
 		assertThat(studentLinkedList.lastIndexOf("Kiss the rain"), is(studentLinkedList.size() - 1));
 	}
 
@@ -219,36 +221,76 @@ public class MyLinkedListTest extends TestCase {
 	}
 
 	@Test
+	public void testToArray() {
+		studentLinkedList.clear();
+		studentLinkedList.add("Kiss the rain");
+		studentLinkedList.add("And you'd fall over me");
+		studentLinkedList.add("Think of me");
+		studentLinkedList.add("Think of me");
+		studentLinkedList.add("Think of me");
+		Object[] array = studentLinkedList.toArray();
+		assertThat(array[0],is((Object)"Kiss the rain"));
+		assertThat(array[4],is((Object)"Think of me"));
+	}
+
+	@Test
+	public void testToArrayTArray() {
+		studentLinkedList.clear();
+		studentLinkedList.add("Only me");
+		studentLinkedList.add("Kiss the rain");
+		studentLinkedList.add("Whenever you need me");
+		studentLinkedList.add("Kiss the rain");
+		studentLinkedList.add("Whenever I'm gone too long");
+		String[] array = studentLinkedList.toArray(new String[]{});
+		assertThat(array[1],is("Kiss the rain"));
+		assertThat(array[4],is("Whenever I'm gone too long"));
+	}
+	
+	@Test
 	public void testRetainAll() {
-		fail("Not yet implemented");
+		studentLinkedList.clear();
+		studentLinkedList.add("If your lips");
+		studentLinkedList.add("Feel hungry and tempted");
+		studentLinkedList.add("Kiss the rain");
+		studentLinkedList.add("And wait for the dawn");
+		studentLinkedList.add("Keep in mind");
+		studentLinkedList.retainAll(Arrays.asList(new String[]{"Kiss the rain", "And wait for the dawn"}));
+		assertThat(studentLinkedList, hasItem("Kiss the rain"));
+		assertThat(studentLinkedList, not(hasItem("Keep in mind")));
 	}
 
 	@Test
 	public void testSet() {
-		fail("Not yet implemented");
+		studentLinkedList.clear();
+		studentLinkedList.add("We're under the same skies");
+		studentLinkedList.add("And the nights");
+		studentLinkedList.add("As empty for me, as for you");
+		studentLinkedList.set(1, "If you feel");
+		assertThat(studentLinkedList.get(1), is("If you feel"));
 	}
 
 	@Test
 	public void testSize() {
 		studentLinkedList.clear();
 		assertThat(studentLinkedList.size(), is(0));
-		studentLinkedList.add("");
+		studentLinkedList.add(null);
 		assertThat(studentLinkedList.size(), is(1));
 	}
 
 	@Test
 	public void testSubList() {
-		fail("Not yet implemented");
+		studentLinkedList.clear();
+		studentLinkedList.add("You can't wait till morning");
+		for (int i = 0; i < 7; i++) {
+			studentLinkedList.add("Kiss the rain");
+		}
+		studentLinkedList.add("Hello");
+		for (int i = 0; i < 3; i++) {
+			studentLinkedList.add("Can you hear me?");
+		}
+		List<String> list = studentLinkedList.subList(1, 3);
+		assertThat(list, hasItem("Kiss the rain"));
+		assertThat(list, not(hasItem("Hello")));
+		assertThat(list, not(hasItem("Can you hear me?")));
 	}
-
-	@Test
-	public void testToArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToArrayTArray() {
-		fail("Not yet implemented");
-	}
-
 }
