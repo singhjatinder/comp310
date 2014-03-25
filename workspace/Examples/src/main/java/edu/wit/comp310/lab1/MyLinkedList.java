@@ -1,4 +1,5 @@
 package edu.wit.comp310.lab1;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,19 +8,6 @@ import java.util.ListIterator;
 
 import edu.wit.comp310.TreeDemo.Node;
 import edu.wit.comp310.TreeDemo.Visitor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import edu.wit.comp310.TreeDemo.Node;
-import edu.wit.comp310.TreeDemo.Visitor;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 /**
  * Roll your own Singly-linked list.
  * 
@@ -45,6 +33,8 @@ public class MyLinkedList<ValueType> implements List<ValueType> {
 			newNode.data = arg0;
 			first = newNode;
 			last = newNode;
+			size++;
+			return true;
 		}
 		return false;
 	}
@@ -57,49 +47,34 @@ public class MyLinkedList<ValueType> implements List<ValueType> {
 		}
 		Node<ValueType> newNode = new Node<ValueType>();
 		newNode.data=arg1;
+		if(isEmpty()){
+			first =newNode;
+			last=newNode;
+		}
+		else if(index==0){
+			newNode.next=first.next;
+			first.next=newNode;
+		}
 		Node<ValueType> current=first;
 		while(i<index)
 			current=current.next;
 		newNode.next=current.next;
 		current.next=newNode;
+		size++;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends ValueType> arg0) {
-		int i=0;
 		for(ValueType e: arg0){
-			if(i==0){
 				add(e);
-				i++;
-			}
-			else{
-				Node<ValueType> newNode = new Node<ValueType>();
-				Node<ValueType> current=first;
-				newNode.data = e;
-				while(current.next!=null)
-					current=current.next;
-				newNode.next=current.next;
-				current.next=newNode;
-			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean addAll(int arg0, Collection<? extends ValueType> arg1) {
-		int i=0;
 		for(ValueType e: arg1){
-			while(i<arg0){
-				add(e);
-				i++;
-			}
-				Node<ValueType> newNode = new Node<ValueType>();
-				Node<ValueType> current=first;
-				newNode.data = e;
-				while(current.next!=null)
-					current=current.next;
-				newNode.next=current.next;
-				current.next=newNode;
+				add(arg0, e);
 		}
 		return false;
 	}
@@ -107,6 +82,8 @@ public class MyLinkedList<ValueType> implements List<ValueType> {
 	@Override
 	public void clear() {
 		first=null;
+		last=null;
+		size=0;
 	}
 
 	@Override
@@ -153,6 +130,7 @@ public class MyLinkedList<ValueType> implements List<ValueType> {
 			if(current.data==arg0){
 				return i;
 			}
+			i++;
 		}
 		return -1;
 	}
@@ -232,19 +210,30 @@ public class MyLinkedList<ValueType> implements List<ValueType> {
 
 	@Override
 	public ValueType remove(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<ValueType> current = first;
+		int i=0;
+		ValueType data;
+		while(i==arg0)
+			current=current.next;
+		data=current.data;
+		current.next=current.next.next;
+		return data;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+		for(Object e: arg0){
+			while(contains(e)){
+				remove(e);
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
+		clear();
+		addAll((Collection<? extends ValueType>) arg0);
 		return false;
 	}
 
