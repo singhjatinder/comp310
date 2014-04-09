@@ -2,6 +2,7 @@ package edu.wit.comp310.lab2;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -179,14 +180,19 @@ public class MyBSTMap<Key extends Comparable<Key>,Value> implements Map<Key, Val
 
 	@Override
 	public boolean containsKey(Object arg0) {
-		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		Searcher<Pair<Key,Value>> searcher = new Searcher<Pair<Key,Value>>(new Pair<Key,Value>((Key)arg0, null));
+		root.accept(searcher);
+		if(searcher.found)
+			return true;
 		return false;
 	}
 
 	@Override
 	public boolean containsValue(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
+		LinkedList<Value> x= new LinkedList<Value>();
+		x=(LinkedList<Value>) values();
+		return x.contains(arg0);
 	}
 
 	@Override
@@ -208,8 +214,7 @@ public class MyBSTMap<Key extends Comparable<Key>,Value> implements Map<Key, Val
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (root==null);
 	}
 
 	@Override
@@ -278,14 +283,21 @@ public class MyBSTMap<Key extends Comparable<Key>,Value> implements Map<Key, Val
 
 	@Override
 	public void putAll(Map<? extends Key, ? extends Value> arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.entrySet();
 	}
 
 	@Override
 	public Value remove(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		Pair<Key,Value> entry = new Pair<Key,Value>((Key) arg0, null);
+		Searcher<Pair<Key, Value>> searcher = new Searcher<Pair<Key, Value>>(entry);
+		root.accept(searcher);
+		if(searcher.parent ==null){
+			return null;
+		}
+		else{
+			return searcher.parent.data.value;
+		}
 	}
 
 	// This is a decent size method
@@ -296,7 +308,8 @@ public class MyBSTMap<Key extends Comparable<Key>,Value> implements Map<Key, Val
 
 	@Override
 	public Collection<Value> values() {
-		// TODO Auto-generated method stub
+		//root.accept(?)
+		//return ?.result;
 		return null;
 	}
 

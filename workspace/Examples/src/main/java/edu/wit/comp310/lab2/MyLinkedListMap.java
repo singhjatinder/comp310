@@ -29,7 +29,11 @@ public class MyLinkedListMap<Key extends Comparable<Key>,Value> implements Map<K
 
 	@Override
 	public boolean containsValue(Object arg0) {
-		// TODO Auto-generated method stub
+		for(Pair<Key,Value> item: list){
+			if(item.value.equals(arg0)){
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -44,20 +48,27 @@ public class MyLinkedListMap<Key extends Comparable<Key>,Value> implements Map<K
 
 	@Override
 	public Value get(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		for (Pair<Key, Value> item : list) {
+			if (item.key.equals(arg0)) {
+				return item.value;
+			}
+		}
+	return null;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return list.isEmpty();
 	}
 
 	@Override
 	public Set<Key> keySet() {
-		// Return all the keys in your map.
-		return null;
+		Set<Key> set = new HashSet<Key>();
+		for (Pair<Key, Value> item : list) {
+			set.add(item.key);
+
+		}
+		return set;
 	}
 
 	@Override
@@ -85,9 +96,15 @@ public class MyLinkedListMap<Key extends Comparable<Key>,Value> implements Map<K
 
 	@Override
 	public Value remove(Object arg0) {
-		// TODO Auto-generated method stub
+		for (Pair<Key, Value> item : list) {
+			if (item.key.equals(arg0)) {
+				Value temp = item.value;	
+				list.remove(item);
+				return temp;	
+				}
+		}
 		return null;
-	}
+	}		
 
 	@Override
 	public int size() {
@@ -96,8 +113,11 @@ public class MyLinkedListMap<Key extends Comparable<Key>,Value> implements Map<K
 
 	@Override
 	public Collection<Value> values() {
-		// TODO Auto-generated method stub
-		return null;
+		MyLinkedList <Value> olist = new MyLinkedList<Value>();
+		for (Pair<Key, Value> item : list) {
+		olist.add(item.value);
+		}
+		return olist;
 	}
 	
 }
